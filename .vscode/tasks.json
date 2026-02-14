@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "./scripts/build"
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "./scripts/run"
+        },
+        {
+            "label": "Build docker",
+            "type": "shell",
+            "command": "./scripts/docker-builder"
+        },
+        {
+            "label": "Run docker",
+            "type": "shell",
+            "dependsOn": ["Build docker"],
+            "command": "./scripts/docker-runner"
+        }
+    ]
+}

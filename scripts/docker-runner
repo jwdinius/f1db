@@ -1,0 +1,24 @@
+#!/bin/bash
+
+IMAGE_NAME="f1db"
+VERSION="26.0.0"
+
+# Stop and remove existing container if it's already running
+if [ "$(docker ps -aq -f name=$IMAGE_NAME)" ]; then
+    echo "Stopping existing container..."
+    docker rm -f $IMAGE_NAME
+fi
+
+echo "run Running $IMAGE_NAME on port 8080..."
+
+# Run the container
+# -d: detached mode
+# -p: map host port 8080 to container port 8080
+# --name: give the container a predictable name
+docker run -d \
+  --name $IMAGE_NAME \
+  -p 8080:8080 \
+  $IMAGE_NAME:$VERSION
+
+echo "Checking container status..."
+docker ps -f name=$IMAGE_NAME

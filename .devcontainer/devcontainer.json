@@ -1,0 +1,44 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+  "build": {
+    "context": "..",
+    "dockerfile": "Dockerfile",
+    "args": {
+      "WORKSPACE": "${containerWorkspaceFolder}",
+      "VERSION": "2026.0.0"
+    },
+    "target": "devcontainer"
+  },
+// Mount the host's Docker socket to the container
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  // Required for DinD to have permissions to manage containers
+  "remoteUser": "f1db",
+  "runArgs": [
+    "--network=host",
+    "--cap-add=SYS_PTRACE",
+    "--device-cgroup-rule=c 189:* rmw",
+    "--security-opt=seccomp:unconfined",
+    "--security-opt=apparmor:unconfined",
+    "--ipc=host",
+    "--privileged"
+  ],
+  "postCreateCommand": "sudo chown root:docker /var/run/docker.sock && sudo chmod 666 /var/run/docker.sock",
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}", // Needed for GUI try ":0" for windows
+    "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
+    "XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
+    "LIBGL_ALWAYS_SOFTWARE": "1"  // Needed for software rendering of opengl
+  },
+  // Set *default* container specific settings.json values on container create.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  }
+}

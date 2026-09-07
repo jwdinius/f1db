@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-jammy AS devcontainer
+FROM eclipse-temurin:25-jdk AS devcontainer
 
 SHELL ["/bin/bash", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
@@ -23,7 +23,7 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN groupadd docker || true && \
     usermod -aG docker f1db
 
-FROM eclipse-temurin:21-jdk-jammy AS builder
+FROM eclipse-temurin:25-jdk AS builder
 WORKDIR /app
 
 # 1. Copy only the Gradle wrapper and configuration files
@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/app/.gradle-cache \
     ./gradlew build -x test
 
 # --- Stage 2: Run ---
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:25-jre
 ARG VERSION
 WORKDIR /app
 
